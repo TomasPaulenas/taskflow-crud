@@ -1,96 +1,191 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ===== TaskFlow – CSS final ===== */
+:root{
+  --bg:#0f1112;
+  --blob1:#f1d2bd22;   /* beige translúcido */
+  --blob2:#9fd9d222;   /* teal translúcido */
+  --panel:#171a1c;
+  --panel-strong:#1e2226;
+  --text:#f4f6f7;
+  --muted:#a7b0b6;
+  --border:#262b2f;
+  --primary:#2dc5b9;   /* Edit */
+  --danger:#ef4d4d;    /* Delete */
+  --radius:14px;
+  --shadow: 0 12px 30px rgba(0,0,0,.35);
+  --focus: 0 0 0 3px rgba(45,197,185,.25);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+/* Base */
+*{ box-sizing:border-box }
+html,body{ height:100% }
+body{
+  margin:0;
+  font: 16px/1.4 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial;
+  color: var(--text);
+  background:
+    radial-gradient(900px 520px at 6% -10%, var(--blob1), transparent 55%),
+    radial-gradient(760px 520px at 102% 8%, var(--blob2), transparent 50%),
+    var(--bg);
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  padding: 20px;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+/* Contenedor principal */
+.container{
+  width:min(720px, 100%);
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  animation: fadeInUp .6s ease both;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Animación entrada app */
+@keyframes fadeInUp {
+  0% { opacity:0; transform: translateY(20px) scale(0.98); }
+  100% { opacity:1; transform: translateY(0) scale(1); }
 }
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Título */
+h1{
+  margin:0 0 6px;
+  font-size: clamp(22px, 4vw, 32px);
+  letter-spacing:.3px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #f7df1eaa);
+/* Paneles */
+#form, #list{
+  width:100%;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
-.card {
-  padding: 2em;
+/* Barra de entrada */
+#form{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding: 12px;
 }
 
-.read-the-docs {
-  color: #888;
+/* Input principal */
+#text{
+  flex:1 1 auto;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--panel-strong);
+  color: var(--text);
+  outline: none;
 }
+#text::placeholder{ color: #8f979d; }
+#text:focus{ box-shadow: var(--focus); border-color:#334148; }
 
-button {
-  border-radius: 8px;
+/* Botón Add */
+#form button{
+  padding: 10px 14px;
+  border-radius: 10px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+  background: var(--primary);
+  color: #061111;
+  font-weight: 700;
+  cursor:pointer;
+  transition: filter .15s ease, transform .06s ease, background .15s ease;
 }
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+#form button:hover{ filter: brightness(1.05) }
+#form button:active{ transform: translateY(1px) }
+#form button:focus-visible{ box-shadow: var(--focus) }
+
+/* Lista */
+#list{
+  padding: 6px;
+  list-style: none;
+  margin: 0;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* Ítems */
+#list li{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding: 12px;
+  margin: 6px;
+  background: var(--panel-strong);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: all .2s ease;
+  animation: popIn .25s ease both;
+}
+#list li:hover{ 
+  background:#20262b; 
+  border-color:#2b363d; 
+  transform: translateY(-2px) scale(1.01);
+}
+
+/* Animación al agregar tarea */
+@keyframes popIn {
+  0% { opacity:0; transform: scale(0.9) translateY(6px); }
+  100% { opacity:1; transform: scale(1) translateY(0); }
+}
+
+/* Texto de la tarea */
+#list li > span{
+  flex:1 1 auto;
+  min-width: 0;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Modo edición */
+#list li > input{
+  flex:1 1 auto;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #1f2529;
+  color: var(--text);
+  outline: none;
+}
+#list li > input:focus{ box-shadow: var(--focus); border-color:#3a4a52 }
+
+/* Botones Edit/Delete */
+#list .edit, #list .delete{
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-weight: 700;
+  cursor:pointer;
+  transition: filter .15s ease, transform .06s ease, background .15s ease, border-color .15s ease;
+  white-space: nowrap;
+}
+
+/* Edit (teal) */
+#list .edit{
+  background: var(--primary);
+  color:#061111;
+}
+#list .edit:hover{ filter: brightness(1.05) }
+#list .edit:active{ transform: translateY(1px) }
+#list .edit:focus-visible{ box-shadow: var(--focus) }
+
+/* Delete (rojo suave) */
+#list .delete{
+  background: #2a1616;
+  color:#ffb8b8;
+  border-color:#3a2020;
+}
+#list .delete:hover{ background:#3a2020 }
+#list .delete:active{ transform: translateY(1px) }
+#list .delete:focus-visible{ box-shadow: 0 0 0 3px rgba(239,77,77,.28) }
+
+/* Responsivo */
+@media (max-width: 420px){
+  #list .edit, #list .delete{ padding: 8px 10px }
 }
